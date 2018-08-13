@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Inputs</title>
+
+	<style>
+
+		* {
+			margin: 0;
+			padding: 0;
+
+			box-sizing: border-box;
+		}
+
+		.container {
+			width: 250px;
+			margin: 0 auto;
+			margin-top: 100px;
+		}
+
+		.input_block {
+			display: block;
+			position: relative;
+			height: 50px;
+			width: 100%;
+		}
+		.input_block span {
+			position: absolute;
+			top: calc((100% - 17px)/2);
+			left: 10px;
+
+			z-index: 0;
+
+			transition: all 0.2s ease-in-out;
+
+			font-size: 14px;
+
+			color: #cccccc;
+		}
+		.input_block.active input {
+			padding-bottom: 5px;
+
+			border-color: #999999;
+		}
+		.input_block.success input {
+			padding-bottom: 5px;
+
+			border-color: rgba(50,200,50,0.5);
+		}
+		.input_block.active span,
+		.input_block.success span {
+			top: 5px;
+
+			font-size: 10px;
+		}
+
+		input {
+			position: relative;
+			padding: 10px;
+			height: 100%;
+			width: 100%;
+
+			outline: none;
+			transition: all 0.2s ease-in-out;
+
+			border: 2px solid #ccc;
+			border-radius: 5px;
+			background-color: transparent;
+		}
+		
+	</style>
+</head>
+<body>
+
+	<div id="app"></div>
+
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+
+<script type="text/babel">
+
+	class Input extends React.Component {
+		constructor(props) {
+			super(props);
+
+			this.state = {setClass: "deactive"};
+			this.handlerChange = this.handlerChange.bind(this);
+		}
+		handlerChange(e) {
+			var newClass = e.target.value.length === 0 ? "deactive" : "active";
+
+			if(e.target.value.search('^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$') === 0) {
+				newClass = "success";
+			}
+			this.setState({setClass: newClass});
+		}
+		render() {
+			return (
+				<div className={`input_block ${this.state.setClass}`} >	
+					<span>{this.props.label}</span>
+					<input onChange={this.handlerChange} />
+				</div>
+			)
+		}
+	}
+
+	ReactDOM.render(
+		<div className="container">
+			<Input label="Введите текст" />
+		</div>,
+		document.querySelector('#app')
+	)
+
+</script>
+
+</body>
+</html>
